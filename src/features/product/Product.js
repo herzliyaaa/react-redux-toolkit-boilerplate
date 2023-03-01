@@ -10,6 +10,7 @@ import {
   Button,
   Modal,
   Form,
+  Spinner,
 } from "react-bootstrap";
 export function Products() {
   const dispatch = useDispatch();
@@ -41,12 +42,13 @@ export function Products() {
 
   return (
     <Container fluid>
+
       <Row className="m-5">
         <Col>
           <div className="d-flex p-2 justify-content-start">
             <h1>Products List</h1>
           </div>
-          <div className="d-flex p-2 justify-content-end">
+          <div className="d-flex pb-2 justify-content-end">
             <Button variant="primary" onClick={handleShow}>
               Add New Product
             </Button>
@@ -96,7 +98,7 @@ export function Products() {
           </Modal>
 
           {isLoading ? (
-            <h2>Loading...</h2>
+            <Spinner animation="border" variant="info" />
           ) : error ? (
             <h2>Error</h2>
           ) : (
@@ -110,16 +112,45 @@ export function Products() {
             >
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Description</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
 
               <tbody>
                 {data.map((product) => (
                   <tr key={product.id}>
+                    <td>{product.id}</td>
                     <td>{product.name}</td>
                     <td>{product.description}</td>
+                    <td>
+                      {" "}
+                      <div className="d-flex p-2 gap-1">
+                        <button
+                          type="button"
+                          className="btn btn-secondary btn-sm ts-buttom"
+                          size="sm"
+                        >
+                          <i class="bi bi-eye"></i>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-success btn-sm ts-buttom"
+                          size="sm"
+                        >
+                          <i class="bi bi-pencil"></i>
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm ml-2 ts-buttom"
+                          size="sm"
+                        >
+                          <i class="bi bi-trash"></i>
+                        </button>
+                      </div>{" "}
+                    </td>
                   </tr>
                 ))}
               </tbody>
