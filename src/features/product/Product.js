@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchAllProducts, addProduct } from "./product.slice";
-
+import Sidebar from "./components/Sidebar";
 import {
   Container,
   Row,
@@ -42,14 +42,14 @@ export function Products() {
 
   return (
     <Container fluid>
-
+      <Sidebar />
       <Row className="m-5">
         <Col>
-          <div className="d-flex p-2 justify-content-start">
-            <h1>Products List</h1>
+          <div className="d-flex pt-5 pb-2 justify-content-start">
+            <h1 className="fw-bold text-uppercase">Products List</h1>
           </div>
           <div className="d-flex pb-2 justify-content-end">
-            <Button variant="primary" onClick={handleShow}>
+            <Button variant="primary" className="fw-bold" onClick={handleShow}>
               Add New Product
             </Button>
           </div>
@@ -133,21 +133,21 @@ export function Products() {
                           className="btn btn-secondary btn-sm ts-buttom"
                           size="sm"
                         >
-                          <i class="bi bi-eye"></i>
+                          <i className="bi bi-eye"></i>
                         </button>
                         <button
                           type="button"
                           className="btn btn-success btn-sm ts-buttom"
                           size="sm"
                         >
-                          <i class="bi bi-pencil"></i>
+                          <i className="bi bi-pencil"></i>
                         </button>
                         <button
                           type="button"
                           className="btn btn-danger btn-sm ml-2 ts-buttom"
                           size="sm"
                         >
-                          <i class="bi bi-trash"></i>
+                          <i className="bi bi-trash"></i>
                         </button>
                       </div>{" "}
                     </td>
