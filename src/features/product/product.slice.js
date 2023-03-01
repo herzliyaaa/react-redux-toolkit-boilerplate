@@ -40,9 +40,9 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    addProduct: (state, action) => {
-      state.data.push(action.payload);
-    },
+    // addProduct: (state, action) => {
+    //   state.data.push(action.payload);
+    // },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllProducts.pending, (state) => {
@@ -56,8 +56,16 @@ export const productSlice = createSlice({
       state.isLoading = false;
       state.error = action.error.message;
     });
+    builder.addCase(addProduct.pending, (state) => {
+      state.isLoading = false;
+    });
     builder.addCase(addProduct.fulfilled, (state, action) => {
+      state.isLoading = false;
       state.data.push(action.payload);
+    });
+    builder.addCase(addProduct.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.error.message;
     });
   },
 });
