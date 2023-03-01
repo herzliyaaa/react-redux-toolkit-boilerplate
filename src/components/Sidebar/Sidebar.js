@@ -16,7 +16,7 @@ function Sidebar() {
           <div>
             <a href="#" className="nav_logo">
             <i className="bi bi-box-seam"></i>
-              <span className="nav_logo-name">LG</span>
+              <span className="nav_logo-name">LG </span>
             </a>
             <div className="nav_list">
               <a href="#" className="nav_link">

@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { fetchAllProducts, addProduct } from "./product.slice";
-import Sidebar from "./components/Sidebar";
 import {
   Container,
   Row,
@@ -12,14 +11,16 @@ import {
   Form,
   Spinner,
 } from "react-bootstrap";
+import Sidebar from "../../components/Sidebar/Sidebar";
+
 export function Products() {
-  const dispatch = useDispatch();
-  const { data, isLoading, error } = useSelector((state) => state.product);
   const [showModal, setShowModal] = useState(false);
   const [product, setProduct] = useState({
     name: "",
     description: "",
   });
+  const dispatch = useDispatch();
+  const { data, isLoading, error } = useSelector((state) => state.product);
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -30,7 +31,7 @@ export function Products() {
 
   const handleProduct = (e) => {
     const { name, description } = product;
-    dispatch(addProduct({ name, description }));
+    dispatch(addProduct({ name, description })).unwrap();
     e.preventDefault();
     handleClose();
     window.location.reload(true);
@@ -126,7 +127,6 @@ export function Products() {
                     <td>{product.name}</td>
                     <td>{product.description}</td>
                     <td>
-                      {" "}
                       <div className="d-flex p-2 gap-1">
                         <button
                           type="button"
@@ -149,7 +149,7 @@ export function Products() {
                         >
                           <i className="bi bi-trash"></i>
                         </button>
-                      </div>{" "}
+                      </div>
                     </td>
                   </tr>
                 ))}
