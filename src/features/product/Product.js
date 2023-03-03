@@ -50,7 +50,11 @@ export function Products() {
             <h1 className="fw-bold text-uppercase">Products List</h1>
           </div>
           <div className="d-flex pb-2 justify-content-end">
-            <Button variant="primary" className="fw-bold" onClick={handleShow}>
+            <Button
+              variant="primary"
+              className="primary-btn fw-bold"
+              onClick={handleShow}
+            >
               Add New Product
             </Button>
           </div>
