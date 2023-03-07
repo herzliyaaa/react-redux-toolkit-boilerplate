@@ -14,14 +14,14 @@
   --z-fixed: 100;
 }
 
-a {
+/* a {
   text-decoration: none;
   color: none;
 }
 
 a:hover {
   color: none;
-}
+} */
 
 h1 {
   font-family: var(--body-font) !important;
@@ -114,7 +114,8 @@ h1 {
   transition: 0.3s;
 }
 
-.nav_logo:hover, .nav_link:hover {
+.nav_logo:hover,
+.nav_link:hover {
   color: var(--white-color);
 }
 
@@ -130,7 +131,7 @@ h1 {
   padding-left: calc(var(--nav-width) + 1rem);
 }
 
-.active {
+/* .active {
   color: var(--white-color);
 }
 
@@ -141,7 +142,7 @@ h1 {
   width: 2px;
   height: 32px;
   background-color: var(--white-color);
-}
+} */
 
 @media screen and (min-width: 768px) {
   body {

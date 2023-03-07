@@ -1,66 +1,105 @@
-import { Container, Row, Col, Input } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { NavLink, useNavigate, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect } from "react";
+import { loginUser } from "./auth.slice";
 export function Login() {
-  return (
-    <div class="container-fluid ps-md-0">
-      <div class="row g-0">
-        <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
-        <div class="col-md-8 col-lg-6">
-          <div class="login d-flex align-items-center py-5">
-            <div class="container">
-              <div class="row">
-                <div class="col-md-9 col-lg-8 mx-auto">
-                  <h3 class="login-heading mb-4">Welcome back!</h3>
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
 
-                  <form>
-                    <div class="form-floating mb-3">
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { isSuccess, isError, error } = useSelector((state) => state.auth);
+  const onChangeInput = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const onSubmitLogin = async (e) => {
+    const { username, password } = user;
+    e.preventDefault();
+    try {
+      dispatch(loginUser({ username, password }));
+      if (isSuccess) {
+        navigate(location.state?.path || "/products");
+      }
+      if (isError) {
+        alert(error);
+      }
+    } catch (error) {
+      console.log("dis error ha", error);
+    }
+  };
+  useEffect(() => {
+    if (localStorage.getItem("user")) {
+      navigate(location.state?.path || "/products");
+    }
+  });
+
+  return (
+    <div className="container-fluid ps-md-0">
+      <div className="row g-0">
+        <div className="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+        <div className="col-md-8 col-lg-6">
+          <div className="login d-flex align-items-center py-5">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-9 col-lg-8 mx-auto">
+                  <h3 className="login-heading mb-4">Welcome back!</h3>
+
+                  <form onSubmit={onSubmitLogin}>
+                    <div className="form-floating mb-3">
                       <input
-                        type="email"
-                        class="form-control"
+                        type="text"
+                        className="form-control"
                         id="floatingInput"
-                        placeholder="name@example.com"
+                        placeholder="herzliyaaa"
+                        name="username"
+                        value={user.username}
+                        onChange={onChangeInput}
                       />
-                      <label for="floatingInput">Email address</label>
+                      <label htmlFor="floatingInput">Username</label>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div className="form-floating mb-3">
                       <input
                         type="password"
-                        class="form-control"
+                        className="form-control"
                         id="floatingPassword"
                         placeholder="Password"
+                        name="password"
+                        value={user.password}
+                        onChange={onChangeInput}
                       />
-                      <label for="floatingPassword">Password</label>
+                      <label htmlFor="floatingPassword">Password</label>
                     </div>
 
-                    <div class="form-check mb-3">
+                    <div className="form-check mb-3">
                       <input
-                        class="form-check-input"
+                        className="form-check-input"
                         type="checkbox"
-                        value=""
                         id="rememberPasswordCheck"
                       />
                       <label
-                        class="form-check-label"
-                        for="rememberPasswordCheck"
+                        className="form-check-label"
+                        htmlFor="rememberPasswordCheck"
                       >
                         Remember password
                       </label>
                     </div>
 
-                    <div class="d-grid">
-                      <Link to="/products">
-                        <button
-                          class="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
-                          type="submit"
-                        >
-                          Sign in
-                        </button>
-                      </Link>
+                    <div className="d-grid">
+                      <button
+                        className="btn btn-lg btn-primary btn-login text-uppercase fw-bold mb-2"
+                        type="submit"
+                      >
+                        Sign in
+                      </button>
 
-                      <div class="text-center">
-                        <a class="small" href="#">
+                      <div className="text-center">
+                        <NavLink className="small" href="#">
                           Forgot password?
-                        </a>
+                        </NavLink>
                       </div>
                     </div>
                   </form>
