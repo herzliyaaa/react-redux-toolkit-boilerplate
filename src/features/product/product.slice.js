@@ -5,24 +5,24 @@ import axiosClient from "../../app/config";
 const initialState = {
   data: [],
   isLoading: false,
-  error: false,
+  error: null,
 };
 
 export const fetchAllProducts = createAsyncThunk(
   "product/fetchAllProducts",
-  async () => {
+  async (thunkAPI) => {
     try {
       const response = await axiosClient.get(`/products`);
       return response.data;
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
 
 export const addProduct = createAsyncThunk(
   "product/addProduct",
-  async (product) => {
+  async (product, thunkAPI) => {
     try {
       const { name, description } = product;
       const response = await axiosClient.post(`/product/create`, {
@@ -32,6 +32,7 @@ export const addProduct = createAsyncThunk(
       return response.data;
     } catch (error) {
       console.log(error);
+      return thunkAPI.rejectWithValue(error.response.data);
     }
   }
 );
@@ -50,7 +51,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(fetchAllProducts.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message;
+      state.error = action.payload.error;
     });
     builder.addCase(addProduct.pending, (state) => {
       state.isLoading = false;
@@ -61,7 +62,7 @@ export const productSlice = createSlice({
     });
     builder.addCase(addProduct.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error.message;
+      state.error = action.payload.error;
     });
   },
 });

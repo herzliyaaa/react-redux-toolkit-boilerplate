@@ -25,7 +25,7 @@ export function Login() {
         navigate(location.state?.path || "/products");
       }
       if (isError) {
-        alert(error);
+        console.log(error);
       }
     } catch (error) {
       console.log("dis error ha", error);

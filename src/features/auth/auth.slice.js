@@ -10,28 +10,31 @@ const initialState = {
   error: null,
 };
 
-export const loginUser = createAsyncThunk("auth/loginUser", async (user) => {
-  try {
-    const { username, password } = user;
+export const loginUser = createAsyncThunk(
+  "auth/loginUser",
+  async (user, thunkAPI) => {
+    try {
+      const { username, password } = user;
 
-    let response = await axiosClient.post(`/login`, {
-      username,
-      password,
-    });
+      let response = await axiosClient.post(`/login`, {
+        username,
+        password,
+      });
 
-    let data = await response.data;
+      let data = await response.data;
 
-    if (response.status === 200) {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data));
-      console.log(data);
-      return data;
+      if (response.status === 200) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("user", JSON.stringify(data));
+
+        return data;
+      }
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+      // return error.response.data;
     }
-  } catch (error) {
-    console.log(error.response.data);
-    return error.response.data;
   }
-});
+);
 
 export const authSlice = createSlice({
   name: "auth",
@@ -47,13 +50,11 @@ export const authSlice = createSlice({
       state.isLoading = false;
       state.data = action.payload;
       state.isError = false;
-      state.error = action.payload;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoading = false;
       state.isError = true;
-      state.error = action.error.message;
-      console.log(action);
+      state.error = action.payload.error;
     });
   },
 });
