@@ -2,6 +2,9 @@ import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { loginUser } from "./auth.slice";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 export function Login() {
   const [user, setUser] = useState({
     username: "",
@@ -19,18 +22,17 @@ export function Login() {
   const onSubmitLogin = async (e) => {
     const { username, password } = user;
     e.preventDefault();
-    try {
-      dispatch(loginUser({ username, password }));
-      if (isSuccess) {
-        navigate(location.state?.path || "/products");
-      }
-      if (isError) {
-        console.log(error);
-      }
-    } catch (error) {
-      console.log("dis error ha", error);
+    dispatch(loginUser({ username, password }));
+    if (isSuccess) {
+      navigate(location.state?.path || "/products");
+    }
+    if (isError) {
+      toast.error(error, {
+        theme: "colored",
+      });
     }
   };
+
   useEffect(() => {
     if (localStorage.getItem("user")) {
       navigate(location.state?.path || "/products");
@@ -46,8 +48,8 @@ export function Login() {
             <div className="container">
               <div className="row">
                 <div className="col-md-9 col-lg-8 mx-auto">
+                  <ToastContainer />
                   <h3 className="login-heading mb-4">Welcome back!</h3>
-
                   <form onSubmit={onSubmitLogin}>
                     <div className="form-floating mb-3">
                       <input
