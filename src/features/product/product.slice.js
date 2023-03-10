@@ -5,6 +5,8 @@ import axiosClient from "../../app/config";
 const initialState = {
   data: [],
   isLoading: false,
+  isError: false,
+  isSuccess: false,
   error: null,
 };
 
@@ -40,25 +42,32 @@ export const addProduct = createAsyncThunk(
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    fetchAllProduct: (state, action) => {
+      return state.data;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetchAllProducts.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
       state.isLoading = false;
+      state.isSuccess = true;
       state.data = action.payload;
     });
     builder.addCase(fetchAllProducts.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload.error;
+      state.isError = false;
     });
     builder.addCase(addProduct.pending, (state) => {
       state.isLoading = false;
     });
     builder.addCase(addProduct.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.data.push(action.payload);
+      state.isSuccess = true;
+      state.data.push(action.payload.product);
     });
     builder.addCase(addProduct.rejected, (state, action) => {
       state.isLoading = false;
@@ -67,4 +76,5 @@ export const productSlice = createSlice({
   },
 });
 
+export const { fetchAllProduct } = productSlice.actions;
 export default productSlice.reducer;

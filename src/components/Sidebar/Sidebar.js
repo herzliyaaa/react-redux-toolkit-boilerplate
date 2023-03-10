@@ -1,10 +1,23 @@
 import "./Sidebar.css";
-import { NavLink } from "react-router-dom";
-
+import { NavLink, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import ToggleButton from "react-bootstrap/ToggleButton";
 function Sidebar() {
+  const navigate = useNavigate();
+  const onSignOut = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+  const [toggle, setToggle] = useState(true);
+
+  useEffect(() => {
+    console.log(toggle);
+  });
   return (
     <>
       <header className="header" id="header">
+        <ToggleButton onClick={() => setToggle(!toggle)} />
         <div className="header_toggle">
           <i className="bx bx-menu" id="header-toggle"></i>
         </div>
@@ -43,10 +56,10 @@ function Sidebar() {
               </NavLink>
             </div>
           </div>
-          <NavLink href="#" className="nav_link">
+          <li onClick={onSignOut} className="nav_link" role="button">
             <i className="bi bi-box-arrow-right"></i>
             <span className="nav_name">Sign Out</span>
-          </NavLink>
+          </li>
         </nav>
       </div>
     </>

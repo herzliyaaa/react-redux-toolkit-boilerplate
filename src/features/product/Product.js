@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchAllProducts, addProduct } from "./product.slice";
+import { useNavigate } from "react-router-dom";
+import { fetchAllProducts, addProduct, fetchAllProduct } from "./product.slice";
 import {
   Container,
   Row,
@@ -20,7 +21,10 @@ export function Products() {
     description: "",
   });
   const dispatch = useDispatch();
-  const { data, isLoading, error } = useSelector((state) => state.product);
+  const navigate = useNavigate();
+  const { data, isLoading, isError, isSuccess, error } = useSelector(
+    (state) => state.product
+  );
 
   const handleClose = () => setShowModal(false);
   const handleShow = () => setShowModal(true);
@@ -31,15 +35,22 @@ export function Products() {
 
   const handleProduct = (e) => {
     const { name, description } = product;
-    dispatch(addProduct({ name, description })).unwrap();
+
     e.preventDefault();
+    dispatch(addProduct({ name, description }));
     handleClose();
-    window.location.reload(true);
+
+    //TODO: do not reload
+    //dispatch(fetchAllProduct())
+    //window.location.reload(true);
   };
 
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
+
+
+
 
   return (
     <Container fluid>
@@ -104,7 +115,7 @@ export function Products() {
 
           {isLoading ? (
             <Spinner animation="border" variant="info" />
-          ) : error ? (
+          ) : isError ? (
             <h2>Error</h2>
           ) : (
             <Table

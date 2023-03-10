@@ -1,7 +1,7 @@
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
-import { loginUser } from "./auth.slice";
+import { loginUser, clearState } from "./auth.slice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -14,7 +14,9 @@ export function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
   const { isSuccess, isError, error } = useSelector((state) => state.auth);
+
   const onChangeInput = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
@@ -24,18 +26,20 @@ export function Login() {
     e.preventDefault();
     dispatch(loginUser({ username, password }));
     if (isSuccess) {
-      navigate(location.state?.path || "/products");
-    }
-    if (isError) {
-      toast.error(error, {
-        theme: "colored",
-      });
+      navigate("/products");
     }
   };
 
   useEffect(() => {
     if (localStorage.getItem("user")) {
       navigate(location.state?.path || "/products");
+    }
+
+    if (isError) {
+      toast.error(error, {
+        theme: "colored",
+      });
+      dispatch(clearState());
     }
   });
 
