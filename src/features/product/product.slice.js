@@ -43,9 +43,7 @@ export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    fetchAllProduct: (state, action) => {
-      return state.data;
-    },
+    clearState: () => initialState,
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllProducts.pending, (state) => {
@@ -67,7 +65,7 @@ export const productSlice = createSlice({
     builder.addCase(addProduct.fulfilled, (state, action) => {
       state.isLoading = false;
       state.isSuccess = true;
-      state.data.push(action.payload.product);
+      state.data.unshift(action.payload.product);
     });
     builder.addCase(addProduct.rejected, (state, action) => {
       state.isLoading = false;
@@ -76,5 +74,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const { fetchAllProduct } = productSlice.actions;
+export const { clearState } = productSlice.actions;
 export default productSlice.reducer;

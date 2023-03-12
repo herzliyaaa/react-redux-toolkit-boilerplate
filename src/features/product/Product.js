@@ -1,7 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { fetchAllProducts, addProduct, fetchAllProduct } from "./product.slice";
+import { fetchAllProducts, addProduct } from "./product.slice";
 import {
   Container,
   Row,
@@ -20,8 +19,8 @@ export function Products() {
     name: "",
     description: "",
   });
+
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { data, isLoading, isError, isSuccess, error } = useSelector(
     (state) => state.product
   );
@@ -35,35 +34,28 @@ export function Products() {
 
   const handleProduct = (e) => {
     const { name, description } = product;
-
     e.preventDefault();
     dispatch(addProduct({ name, description }));
     handleClose();
-
-    //TODO: do not reload
-    //dispatch(fetchAllProduct())
-    //window.location.reload(true);
+    setProduct({ name: "", description: "" });
   };
 
   useEffect(() => {
     dispatch(fetchAllProducts());
   }, [dispatch]);
 
-
-
-
   return (
     <Container fluid>
       <Sidebar />
-      <Row className="m-5">
+      <Row className='m-5'>
         <Col>
-          <div className="d-flex pt-5 pb-2 justify-content-start">
-            <h1 className="fw-bold text-uppercase">Products List</h1>
+          <div className='d-flex pt-5 pb-2 justify-content-start'>
+            <h1 className='fw-bold text-uppercase'>Products List</h1>
           </div>
-          <div className="d-flex pb-2 justify-content-end">
+          <div className='d-flex pb-2 justify-content-end'>
             <Button
-              variant="primary"
-              className="primary-btn fw-bold"
+              variant='primary'
+              className='primary-btn fw-bold'
               onClick={handleShow}
             >
               Add New Product
@@ -76,37 +68,37 @@ export function Products() {
               </Modal.Header>
               <Modal.Body>
                 <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlInput1"
+                  className='mb-3'
+                  controlId='exampleForm.ControlInput1'
                 >
                   <Form.Label>Product Name</Form.Label>
                   <Form.Control
-                    type="text"
-                    name="name"
+                    type='text'
+                    name='name'
                     value={product.name}
                     onChange={onChangeInput}
                     autoFocus
                   />
                 </Form.Group>
                 <Form.Group
-                  className="mb-3"
-                  controlId="exampleForm.ControlTextarea1"
+                  className='mb-3'
+                  controlId='exampleForm.ControlTextarea1'
                 >
                   <Form.Label>Description</Form.Label>
                   <Form.Control
-                    as="textarea"
+                    as='textarea'
                     rows={3}
                     value={product.description}
-                    name="description"
+                    name='description'
                     onChange={onChangeInput}
                   />
                 </Form.Group>
               </Modal.Body>
               <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant='secondary' onClick={handleClose}>
                   Close
                 </Button>
-                <Button variant="primary" type="submit">
+                <Button variant='primary' type='submit'>
                   Save
                 </Button>
               </Modal.Footer>
@@ -114,62 +106,64 @@ export function Products() {
           </Modal>
 
           {isLoading ? (
-            <Spinner animation="border" variant="info" />
+            <Spinner animation='border' variant='info' />
           ) : isError ? (
-            <h2>Error</h2>
+            <h2>{error}</h2>
           ) : (
-            <Table
-              striped
-              bordered
-              hover
-              variant="striped"
-              size="sm"
-              responsive
-            >
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Name</th>
-                  <th>Description</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                {data.map((product) => (
-                  <tr key={product.id}>
-                    <td>{product.id}</td>
-                    <td>{product.name}</td>
-                    <td>{product.description}</td>
-                    <td>
-                      <div className="d-flex p-2 gap-1">
-                        <button
-                          type="button"
-                          className="btn btn-secondary btn-sm ts-buttom"
-                          size="sm"
-                        >
-                          <i className="bi bi-eye"></i>
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-success btn-sm ts-buttom"
-                          size="sm"
-                        >
-                          <i className="bi bi-pencil"></i>
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm ml-2 ts-buttom"
-                          size="sm"
-                        >
-                          <i className="bi bi-trash"></i>
-                        </button>
-                      </div>
-                    </td>
+            isSuccess && (
+              <Table
+                striped
+                bordered
+                hover
+                variant='striped'
+                size='sm'
+                responsive
+              >
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </Table>
+                </thead>
+
+                <tbody>
+                  {data.map((product) => (
+                    <tr key={product.id}>
+                      <td>{product.id}</td>
+                      <td>{product.name}</td>
+                      <td>{product.description}</td>
+                      <td>
+                        <div className='d-flex p-2 gap-1'>
+                          <button
+                            type='button'
+                            className='btn btn-secondary btn-sm ts-buttom'
+                            size='sm'
+                          >
+                            <i className='bi bi-eye'></i>
+                          </button>
+                          <button
+                            type='button'
+                            className='btn btn-success btn-sm ts-buttom'
+                            size='sm'
+                          >
+                            <i className='bi bi-pencil'></i>
+                          </button>
+                          <button
+                            type='button'
+                            className='btn btn-danger btn-sm ml-2 ts-buttom'
+                            size='sm'
+                          >
+                            <i className='bi bi-trash'></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            )
           )}
         </Col>
       </Row>
