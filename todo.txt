@@ -1,2 +1,5 @@
 
 [/] Fix extraReducers with rejected for error handling. (Both in Auth and Product)
+[] Add success toast after adding a new data
+[] Edit in Slice
+[] Delete in Slice
