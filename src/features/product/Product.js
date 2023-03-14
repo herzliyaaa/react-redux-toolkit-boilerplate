@@ -1,6 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import { fetchAllProducts, addProduct } from "./product.slice";
+import { fetchAllProducts, addProduct, clearSuccess } from "./product.slice";
+import { ToastContainer, toast } from "react-toastify";
 import {
   Container,
   Row,
@@ -41,6 +42,12 @@ export function Products() {
     dispatch(addProduct({ name, description }));
     handleClose();
     setProduct({ name: "", description: "" });
+    if (isSuccess) {
+      toast.success("Added Successfully!", {
+        theme: "colored",
+      });
+      dispatch(clearSuccess());
+    }
   };
 
 
@@ -64,6 +71,7 @@ export function Products() {
   return (
     <Container fluid>
       <Sidebar />
+      <ToastContainer/>
       <Row className="m-5">
         <Col>
           <div className="d-flex pt-5 pb-2 justify-content-start">
@@ -192,36 +200,6 @@ export function Products() {
                     </Pagination.Item>
                   ))}
                 </Pagination>
-
-                {/* <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-end">
-                    <li class="page-item disabled">
-                      <a class="page-link" href="#" tabindex="-1">
-                        Previous
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        1
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        2
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        3
-                      </a>
-                    </li>
-                    <li class="page-item">
-                      <a class="page-link" href="#">
-                        Next
-                      </a>
-                    </li>
-                  </ul>
-                </nav> */}
               </>
             )
           )}

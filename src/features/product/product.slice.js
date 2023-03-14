@@ -39,11 +39,14 @@ export const addProduct = createAsyncThunk(
   }
 );
 
+//TODO: Edit Product
+
 export const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
     clearState: () => initialState,
+    clearSuccess: () => (initialState.isSuccess = false),
   },
   extraReducers: (builder) => {
     builder.addCase(fetchAllProducts.pending, (state) => {
@@ -74,5 +77,5 @@ export const productSlice = createSlice({
   },
 });
 
-export const { clearState } = productSlice.actions;
+export const { clearState, clearSuccess } = productSlice.actions;
 export default productSlice.reducer;
