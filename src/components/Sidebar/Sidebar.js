@@ -1,12 +1,16 @@
 import "./Sidebar.css";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { clearState } from "../../features/product/product.slice";
 
-function Sidebar() {
+export const Sidebar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const onSignOut = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    dispatch(clearState());
     navigate("/");
   };
   const [toggle, setToggle] = useState(false);
@@ -47,7 +51,7 @@ function Sidebar() {
             </NavLink>
             <div className='nav_list'>
               <NavLink href='#' className='nav_link'>
-                <i className='bi bi-bag-check'></i>
+                <i className='bi bi-bag-check' title='Items'></i>
                 <span className='nav_name'>Items</span>
               </NavLink>
               <NavLink href='#' className='nav_link'>
@@ -77,6 +81,5 @@ function Sidebar() {
       </div>
     </>
   );
-}
+};
 
-export default Sidebar;

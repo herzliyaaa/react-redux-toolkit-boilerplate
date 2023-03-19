@@ -39,7 +39,17 @@ export const addProduct = createAsyncThunk(
   }
 );
 
-//TODO: Edit Product
+export const deleteProduct = createAsyncThunk(
+  "product/deleteProduct",
+  async (thunkAPI, id) => {
+    try {
+      const response = await axiosClient.patch(`/product/delete/${id}`);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data);
+    }
+  }
+);
 
 export const productSlice = createSlice({
   name: "product",
@@ -73,6 +83,10 @@ export const productSlice = createSlice({
     builder.addCase(addProduct.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.payload.error;
+    });
+    builder.addCase(deleteProduct.fulfilled, (state, action) => {
+      let index = state.findIndex(({ id }) => id === action.payload.id);
+      state.splice(index, 1);
     });
   },
 });
